@@ -22,5 +22,22 @@ class FrequencyTests(unittest.TestCase):
         self.assertEqual(remove_stopwords(["the", "cat", "is", "here"]), ["cat", "here"])
 
 
+class ContentWordsTests(unittest.TestCase):
+    def test_top_content_words_filters_stopwords(self):
+        from word_frequency import top_content_words
+
+        text = "the cat and the dog and the bird"
+        self.assertEqual(
+            top_content_words(text, 3),
+            [("bird", 1), ("cat", 1), ("dog", 1)],
+        )
+
+    def test_top_content_words_validation(self):
+        from word_frequency import top_content_words
+
+        with self.assertRaises(ValueError):
+            top_content_words("text", 0)
+
+
 if __name__ == "__main__":
     unittest.main()
