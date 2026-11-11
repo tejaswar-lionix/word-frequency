@@ -32,3 +32,13 @@ def top_words(text, limit=10):
 
 def remove_stopwords(words):
     return [word for word in words if word not in STOPWORDS]
+
+
+def top_content_words(text, limit=10):
+    """Return top words after removing common stopwords."""
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+    counts = {}
+    for word in remove_stopwords(tokenize(text)):
+        counts[word] = counts.get(word, 0) + 1
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
