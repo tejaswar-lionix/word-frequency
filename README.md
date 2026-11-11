@@ -2,13 +2,23 @@
 
 Count word frequencies and rank the most common words.
 
-## Status
+## Usage
 
-Starter project with a working core module and unit tests.
+```bash
+python3 -c "from word_frequency import top_words; print(top_words('go go stop'))"
+```
+
+## Features
+
+- Lowercase tokenization with punctuation handling
+- Frequency ranking with deterministic tie-breaking
+- Content ranking with top_content_words(text, limit)
 
 ## Tests
 
+```bash
 python3 -m unittest -q
+```
 
 ## License
 
