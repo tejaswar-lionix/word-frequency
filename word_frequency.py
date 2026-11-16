@@ -24,6 +24,10 @@ def count_words(text):
     return counts
 
 
+def unique_words(text):
+    return sorted(set(tokenize(text)))
+
+
 def top_words(text, limit=10):
     if limit < 1:
         raise ValueError("limit must be at least 1")
