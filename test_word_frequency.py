@@ -29,6 +29,28 @@ class FrequencyTests(unittest.TestCase):
         self.assertEqual(remove_stopwords(["the", "cat", "is", "here"]), ["cat", "here"])
 
 
+class UniqueWordsTests(unittest.TestCase):
+    def test_duplicates_removed(self):
+        from word_frequency import unique_words
+
+        self.assertEqual(unique_words("go go stop stop stop"), ["go", "stop"])
+
+    def test_sorted_output(self):
+        from word_frequency import unique_words
+
+        self.assertEqual(unique_words("gamma alpha beta"), ["alpha", "beta", "gamma"])
+
+    def test_punctuation_and_case_handled(self):
+        from word_frequency import unique_words
+
+        self.assertEqual(unique_words("Dog, dog! CAT?"), ["cat", "dog"])
+
+    def test_empty_text_returns_empty_list(self):
+        from word_frequency import unique_words
+
+        self.assertEqual(unique_words(""), [])
+
+
 class NgramTests(unittest.TestCase):
     def test_bigrams(self):
         self.assertEqual(
