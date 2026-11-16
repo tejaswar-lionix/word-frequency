@@ -77,5 +77,45 @@ class ContentWordsTests(unittest.TestCase):
             top_content_words("text", 0)
 
 
+class ExportCsvTests(unittest.TestCase):
+    def test_export_writes_header_and_rows(self):
+        import csv
+        import os
+        import tempfile
+
+        from word_frequency import export_csv
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "words.csv")
+            result = export_csv("go go stop", path, limit=2)
+            self.assertEqual(result, path)
+            with open(path, encoding="utf-8") as handle:
+                rows = list(csv.reader(handle))
+        self.assertEqual(rows[0], ["word", "count"])
+        self.assertEqual(rows[1], ["go", "2"])
+        self.assertEqual(rows[2], ["stop", "1"])
+
+    def test_export_content_only_excludes_stopwords(self):
+        import csv
+        import os
+        import tempfile
+
+        from word_frequency import export_csv
+
+        text = "the cat and the dog and the bird"
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "words.csv")
+            export_csv(text, path, limit=3, content_only=True)
+            with open(path, encoding="utf-8") as handle:
+                rows = list(csv.reader(handle))
+        self.assertEqual(rows[1:], [["bird", "1"], ["cat", "1"], ["dog", "1"]])
+
+    def test_export_validates_limit(self):
+        from word_frequency import export_csv
+
+        with self.assertRaises(ValueError):
+            export_csv("text", "unused.csv", limit=0)
+
+
 if __name__ == "__main__":
     unittest.main()
