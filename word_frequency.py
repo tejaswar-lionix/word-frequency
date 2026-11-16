@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Count word frequencies in text."""
+import csv
 import re
 
 STOPWORDS = frozenset(
@@ -59,3 +60,16 @@ def top_content_words(text, limit=10):
     for word in remove_stopwords(tokenize(text)):
         counts[word] = counts.get(word, 0) + 1
     return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
+
+
+def export_csv(text, path, limit=10, content_only=False):
+    """Write top words and counts to a CSV file."""
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+    words = top_content_words(text, limit) if content_only else top_words(text, limit)
+    with open(path, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["word", "count"])
+        for word, count in words:
+            writer.writerow([word, count])
+    return path
