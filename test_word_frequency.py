@@ -1,6 +1,13 @@
 import unittest
 
-from word_frequency import count_words, remove_stopwords, tokenize, top_words
+from word_frequency import (
+    count_words,
+    ngrams,
+    remove_stopwords,
+    tokenize,
+    top_ngrams,
+    top_words,
+)
 
 
 class FrequencyTests(unittest.TestCase):
@@ -20,6 +27,37 @@ class FrequencyTests(unittest.TestCase):
 
     def test_remove_stopwords(self):
         self.assertEqual(remove_stopwords(["the", "cat", "is", "here"]), ["cat", "here"])
+
+
+class NgramTests(unittest.TestCase):
+    def test_bigrams(self):
+        self.assertEqual(
+            ngrams("the cat sat"),
+            [("the", "cat"), ("cat", "sat")],
+        )
+
+    def test_trigram_counts(self):
+        self.assertEqual(
+            top_ngrams("the cat sat the cat sat", 3),
+            [("the cat sat", 2), ("cat sat the", 1), ("sat the cat", 1)],
+        )
+
+    def test_top_ngrams_ranking_and_tie_break(self):
+        text = "a b c a b c a b d"
+        self.assertEqual(
+            top_ngrams(text, 2, 2),
+            [("a b", 3), ("b c", 2)],
+        )
+
+    def test_ngram_validates_n(self):
+        with self.assertRaises(ValueError):
+            ngrams("text", 0)
+        with self.assertRaises(ValueError):
+            top_ngrams("text", 0)
+
+    def test_short_text_returns_empty(self):
+        self.assertEqual(ngrams("one"), [])
+        self.assertEqual(top_ngrams("one"), [])
 
 
 class ContentWordsTests(unittest.TestCase):
