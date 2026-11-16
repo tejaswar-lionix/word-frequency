@@ -30,6 +30,23 @@ def top_words(text, limit=10):
     return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
 
 
+def ngrams(text, n=2):
+    if n < 1:
+        raise ValueError("n must be at least 1")
+    words = tokenize(text)
+    return [tuple(words[index:index + n]) for index in range(len(words) - n + 1)]
+
+
+def top_ngrams(text, n=2, limit=10):
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+    counts = {}
+    for gram in ngrams(text, n):
+        key = " ".join(gram)
+        counts[key] = counts.get(key, 0) + 1
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
+
+
 def remove_stopwords(words):
     return [word for word in words if word not in STOPWORDS]
 
