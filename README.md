@@ -28,6 +28,10 @@ python3 -c "from word_frequency import longest_words; print(longest_words('go st
 python3 -m unittest -q
 ```
 
+## Additional API
+
+- `lexical_diversity(text)` returns the ratio of unique words to total words.
+
 ## License
 
 MIT
