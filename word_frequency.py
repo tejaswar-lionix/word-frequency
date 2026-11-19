@@ -66,6 +66,13 @@ def top_content_words(text, limit=10):
     return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
 
 
+def longest_words(text, limit=5):
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+    words = set(tokenize(text))
+    return sorted(words, key=lambda word: (-len(word), word))[:limit]
+
+
 def export_csv(text, path, limit=10, content_only=False):
     """Write top words and counts to a CSV file."""
     if limit < 1:
