@@ -99,6 +99,40 @@ class ContentWordsTests(unittest.TestCase):
             top_content_words("text", 0)
 
 
+class LongestWordsTests(unittest.TestCase):
+    def test_orders_by_length_then_alphabetically(self):
+        from word_frequency import longest_words
+
+        self.assertEqual(
+            longest_words("cat elephant dog banana"),
+            ["elephant", "banana", "cat", "dog"],
+        )
+
+    def test_respects_limit(self):
+        from word_frequency import longest_words
+
+        self.assertEqual(longest_words("one three eighty", 2), ["eighty", "three"])
+
+    def test_unique_words_and_ties(self):
+        from word_frequency import longest_words
+
+        self.assertEqual(
+            longest_words("beta beta alpha gamma"),
+            ["alpha", "gamma", "beta"],
+        )
+
+    def test_empty_text(self):
+        from word_frequency import longest_words
+
+        self.assertEqual(longest_words(""), [])
+
+    def test_validates_limit(self):
+        from word_frequency import longest_words
+
+        with self.assertRaises(ValueError):
+            longest_words("text", 0)
+
+
 class ExportCsvTests(unittest.TestCase):
     def test_export_writes_header_and_rows(self):
         import csv
