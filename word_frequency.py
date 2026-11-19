@@ -84,3 +84,11 @@ def export_csv(text, path, limit=10, content_only=False):
         for word, count in words:
             writer.writerow([word, count])
     return path
+
+
+def lexical_diversity(text):
+    """Return unique words divided by total words, rounded to three places."""
+    words = tokenize(text)
+    if not words:
+        return 0.0
+    return round(len(set(words)) / len(words), 3)

@@ -173,5 +173,17 @@ class ExportCsvTests(unittest.TestCase):
             export_csv("text", "unused.csv", limit=0)
 
 
+class LexicalDiversityTests(unittest.TestCase):
+    def test_ratio_of_unique_words(self):
+        from word_frequency import lexical_diversity
+
+        self.assertEqual(lexical_diversity("the cat the dog"), 0.75)
+
+    def test_empty_text(self):
+        from word_frequency import lexical_diversity
+
+        self.assertEqual(lexical_diversity(""), 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()
